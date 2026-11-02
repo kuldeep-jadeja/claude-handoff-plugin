@@ -10,9 +10,9 @@
   "plugins": [
     {
       "name": "handoff",
-      "source": "./plugins/handoff",
+      "source": "./",
       "description": "Save a handoff before /clear; the next session loads it automatically.",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "category": "productivity"
     }
   ]

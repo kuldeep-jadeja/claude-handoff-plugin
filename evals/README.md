@@ -8,7 +8,7 @@ Cases for `claude plugin eval`:
 | `no-secrets` | A password and an API key the user mentioned never reach the handoff. |
 | `resume-command` | `/handoff:resume` summarises the handoff, warns about the other branch, and waits before working. |
 
-Run from `plugins/handoff`:
+Run from the repository root:
 
 ```bash
 claude plugin eval . --scaffold --allow-tools Write --judge-model sonnet
