@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: resume-command
+description: /handoff:resume summarises the saved handoff, warns about the branch, and waits for confirmation.
+tags: [smoke]
+context:
+  scaffold_script: fixture.sh

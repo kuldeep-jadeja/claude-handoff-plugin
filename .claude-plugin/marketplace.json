@@ -12,7 +12,7 @@
       "name": "handoff",
       "source": "./plugins/handoff",
       "description": "Save a handoff before /clear; the next session loads it automatically.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "category": "productivity"
     }
   ]

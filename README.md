@@ -12,4 +12,4 @@ A Claude Code plugin marketplace.
 
 | Plugin | What it does | Install |
 | --- | --- | --- |
-| [handoff](plugins/handoff) | Save a handoff before `/clear`; the next session loads it automatically. | `/plugin install handoff@kuldeep-jadeja` |
+| [handoff](plugins/handoff) | Save a handoff before `/clear`; the next session loads it automatically. Includes `/handoff:resume` and `/handoff:list`. | `/plugin install handoff@kuldeep-jadeja` |

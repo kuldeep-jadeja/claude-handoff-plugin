@@ -135,11 +135,50 @@ def last_prompts(transcript):
     return prompts[-MAX_PROMPTS:]
 
 
+def session_started_at(transcript):
+    """Epoch seconds of the first timestamped entry in the transcript, or None."""
+    try:
+        with open(transcript, "rb") as f:
+            head = f.read(256 * 1024).decode("utf-8", "ignore")
+    except Exception:
+        return None
+    for line in head.splitlines():
+        try:
+            ts = json.loads(line).get("timestamp")
+        except Exception:
+            continue
+        if isinstance(ts, str) and ts:
+            try:
+                return datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).timestamp()
+            except ValueError:
+                continue
+    return None
+
+
+def handoff_written_during(transcript):
+    """True when CURRENT.md was updated after this session started."""
+    started = session_started_at(transcript)
+    try:
+        return started is not None and os.path.getmtime(CURRENT) >= started
+    except OSError:
+        return False
+
+
 def snapshot(reason_override=None):
     data = read_input()
-    prompts = last_prompts(data.get("transcript_path") or "")
+    transcript = data.get("transcript_path") or ""
+    prompts = last_prompts(transcript)
     if not prompts:
         return  # nothing worth recording (e.g. a session that only ran /model)
+    if handoff_written_during(transcript):
+        # CURRENT.md already says what this session did; the prompts would only
+        # repeat it and cost tokens at every start.
+        prompts_section = [
+            "## Last prompts in that session",
+            "Omitted: the handoff in CURRENT.md was updated during this session.",
+        ]
+    else:
+        prompts_section = ["## Last prompts in that session", *[f"- {p}" for p in prompts]]
     reason = reason_override or data.get("reason", "?")
     if reason_override == "compact" and data.get("trigger"):
         reason = f"compact ({data['trigger']})"
@@ -160,8 +199,7 @@ def snapshot(reason_override=None):
         git("log", "--oneline", "-5"),
         "```",
         "",
-        "## Last prompts in that session",
-        *[f"- {p}" for p in prompts],
+        *prompts_section,
         "",
     ]
     os.makedirs(DIR, exist_ok=True)
@@ -211,7 +249,7 @@ def start():
             print(
                 "Session continuity: older handoffs were not loaded because they are stale: "
                 + ", ".join(skipped)
-                + ". Mention this only if the user asks about earlier work."
+                + ". Mention this only if the user asks about earlier work; /handoff:resume loads them."
             )
         return
     if source == "compact":
