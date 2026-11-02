@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-label="Session 1: you ask Claude to save context, the handoff skill writes CURRENT.md and the SessionEnd hook writes AUTO.md into knowledge/handoffs. Session 2: the SessionStart hook loads both files and Claude asks whether to continue.">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#FFC43D"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="560" rx="24" fill="#10172C"/>
+
+  <g font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+
+    <!-- Column 1: Session 1 -->
+    <rect x="36" y="36" width="372" height="488" rx="18" fill="#18213E" stroke="#2C3A6B"/>
+    <rect x="60" y="60" width="112" height="28" rx="14" fill="#4662A8"/>
+    <text x="116" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF" letter-spacing="1">SESSION 1</text>
+    <text x="60" y="128" font-size="26" font-weight="700" fill="#FFFFFF">Before /clear</text>
+
+    <rect x="60" y="152" width="324" height="70" rx="14" fill="#2A3870"/>
+    <text x="80" y="181" font-size="14" font-weight="700" fill="#9FB3F2">YOU</text>
+    <text x="80" y="206" font-size="18" fill="#FFFFFF">"Save context, I'm going to /clear"</text>
+
+    <circle cx="78" cy="268" r="16" fill="#FFC43D"/>
+    <text x="78" y="274" text-anchor="middle" font-size="17" font-weight="700" fill="#10172C">1</text>
+    <text x="108" y="262" font-size="19" font-weight="600" fill="#FFFFFF">The handoff skill writes</text>
+    <text x="108" y="288" font-size="17" fill="#B9C4E8">goal, next steps, decisions</text>
+
+    <circle cx="78" cy="348" r="16" fill="#FFC43D"/>
+    <text x="78" y="354" text-anchor="middle" font-size="17" font-weight="700" fill="#10172C">2</text>
+    <text x="108" y="342" font-size="19" font-weight="600" fill="#FFFFFF">On /clear or exit, a hook</text>
+    <text x="108" y="368" font-size="17" fill="#B9C4E8">snapshots git state + prompts</text>
+
+    <circle cx="78" cy="428" r="16" fill="#6E8EF5"/>
+    <text x="78" y="434" text-anchor="middle" font-size="17" font-weight="700" fill="#10172C">+</text>
+    <text x="108" y="422" font-size="19" font-weight="600" fill="#FFFFFF">Also before compaction</text>
+    <text x="108" y="448" font-size="17" fill="#B9C4E8">long sessions are covered too</text>
+
+    <!-- Arrow 1 -->
+    <line x1="412" y1="280" x2="448" y2="280" stroke="#FFC43D" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <!-- Column 2: the project folder -->
+    <rect x="454" y="36" width="372" height="488" rx="18" fill="#18213E" stroke="#2C3A6B"/>
+    <rect x="478" y="60" width="150" height="28" rx="14" fill="#3B4A7E"/>
+    <text x="553" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF" letter-spacing="1">YOUR PROJECT</text>
+    <text x="478" y="128" font-size="22" font-weight="700" fill="#FFFFFF" font-family="SFMono-Regular, Consolas, Menlo, monospace">knowledge/handoffs/</text>
+
+    <g font-family="SFMono-Regular, Consolas, Menlo, monospace">
+      <rect x="478" y="152" width="324" height="78" rx="12" fill="#F0F4FF"/>
+      <text x="498" y="182" font-size="19" font-weight="700" fill="#1C2547">CURRENT.md</text>
+      <text x="498" y="210" font-size="15" fill="#4A5680" font-family="'Segoe UI', Helvetica, Arial, sans-serif">written by Claude, under 60 lines</text>
+
+      <rect x="478" y="244" width="324" height="78" rx="12" fill="#F0F4FF"/>
+      <text x="498" y="274" font-size="19" font-weight="700" fill="#1C2547">AUTO.md</text>
+      <text x="498" y="302" font-size="15" fill="#4A5680" font-family="'Segoe UI', Helvetica, Arial, sans-serif">automatic, secrets redacted</text>
+
+      <rect x="478" y="336" width="324" height="78" rx="12" fill="#2A3870"/>
+      <text x="498" y="366" font-size="19" font-weight="700" fill="#FFFFFF">archive/</text>
+      <text x="498" y="394" font-size="15" fill="#B9C4E8" font-family="'Segoe UI', Helvetica, Arial, sans-serif">older handoffs, via /handoff:list</text>
+    </g>
+
+    <text x="478" y="460" font-size="16" fill="#B9C4E8">Kept out of git commits.</text>
+    <text x="478" y="486" font-size="16" fill="#B9C4E8">Never leaves your machine.</text>
+
+    <!-- Arrow 2 -->
+    <line x1="830" y1="280" x2="866" y2="280" stroke="#FFC43D" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <!-- Column 3: Session 2 -->
+    <rect x="872" y="36" width="372" height="488" rx="18" fill="#18213E" stroke="#2C3A6B"/>
+    <rect x="896" y="60" width="112" height="28" rx="14" fill="#4662A8"/>
+    <text x="952" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF" letter-spacing="1">SESSION 2</text>
+    <text x="896" y="128" font-size="26" font-weight="700" fill="#FFFFFF">After /clear</text>
+
+    <circle cx="914" cy="174" r="16" fill="#FFC43D"/>
+    <text x="914" y="180" text-anchor="middle" font-size="17" font-weight="700" fill="#10172C">3</text>
+    <text x="944" y="168" font-size="19" font-weight="600" fill="#FFFFFF">A hook loads the handoff</text>
+    <text x="944" y="194" font-size="17" fill="#B9C4E8">at startup, /clear, compaction</text>
+
+    <rect x="896" y="226" width="324" height="164" rx="14" fill="#1D274A" stroke="#FFC43D" stroke-width="2"/>
+    <text x="916" y="256" font-size="14" font-weight="700" fill="#FFC43D">CLAUDE</text>
+    <text x="916" y="284" font-size="18" fill="#FFFFFF">We were fixing the login</text>
+    <text x="916" y="310" font-size="18" fill="#FFFFFF">timeout. Next step: add the</text>
+    <text x="916" y="336" font-size="18" fill="#FFFFFF">59-minute session test.</text>
+    <text x="916" y="368" font-size="18" font-weight="700" fill="#FFC43D">Continue from here?</text>
+
+    <text x="896" y="434" font-size="16" fill="#B9C4E8">Older than 14 days: skipped.</text>
+    <text x="896" y="460" font-size="16" fill="#B9C4E8">Other git branch: you're warned.</text>
+    <text x="896" y="486" font-size="16" fill="#B9C4E8">Nothing starts until you say so.</text>
+  </g>
+</svg>
