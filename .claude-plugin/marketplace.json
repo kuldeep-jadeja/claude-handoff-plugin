@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "kuldeep-jadeja",
+  "description": "Claude Code plugins by Kuldeep Jadeja.",
+  "owner": {
+    "name": "Kuldeep Jadeja",
+    "email": "kuldeepjadeja7414@gmail.com",
+    "url": "https://github.com/kuldeep-jadeja"
+  },
+  "plugins": [
+    {
+      "name": "handoff",
+      "source": "./plugins/handoff",
+      "description": "Save a handoff before /clear; the next session loads it automatically.",
+      "version": "1.0.0",
+      "category": "productivity"
+    }
+  ]
+}

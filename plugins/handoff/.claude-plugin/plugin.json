@@ -1,0 +1,14 @@
+{
+  "name": "handoff",
+  "version": "1.0.0",
+  "description": "Session continuity for Claude Code: save a handoff before /clear and have it loaded automatically in the next session.",
+  "author": {
+    "name": "Kuldeep Jadeja",
+    "email": "kuldeepjadeja7414@gmail.com",
+    "url": "https://github.com/kuldeep-jadeja"
+  },
+  "homepage": "https://github.com/kuldeep-jadeja/claude-handoff-plugin",
+  "repository": "https://github.com/kuldeep-jadeja/claude-handoff-plugin",
+  "license": "MIT",
+  "keywords": ["handoff", "context", "session", "continuity", "clear", "memory"]
+}

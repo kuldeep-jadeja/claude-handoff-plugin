@@ -1,0 +1,46 @@
+---
+name: handoff
+description: Save a short handoff of the current work to knowledge/handoffs/CURRENT.md so a fresh session (after /clear or restart) can pick up where this one stopped. Use when the user says "handoff", "save context", "I'm going to clear", when a task finishes, or when switching topics.
+argument-hint: "[topic]"
+---
+
+# Handoff
+
+Write the state a fresh Claude needs to continue without re-deriving anything. The plugin's SessionStart hook loads it automatically at startup and after `/clear`.
+
+## Steps
+1. If `knowledge/handoffs/CURRENT.md` exists and covers a different topic or an older task, move it to `knowledge/handoffs/archive/<YYYY-MM-DD-HHMM>-<slug>.md` first. If it is the same ongoing task, update it in place.
+2. Collect facts: `git branch --show-current`, `git status --short`, `git log --oneline -5`, any dev servers or background runs still alive (ports, test shells), and what this conversation decided.
+3. Write `knowledge/handoffs/CURRENT.md` using the template below. Keep it under 60 lines. Use specific file paths, commands and decisions, not narrative.
+4. Never write secrets: no connection strings with passwords, API keys, tokens, or private keys. Refer to them by env var name.
+5. Reply with one line: `Handoff saved to knowledge/handoffs/CURRENT.md. Safe to /clear.`
+
+## Template
+```markdown
+# Handoff: <topic>
+Updated: <YYYY-MM-DD HH:MM> | Branch: <branch> | Last commit: <hash subject>
+
+## Goal
+<1-2 lines: what the user is trying to achieve and why>
+
+## Done
+- <finished item, with file paths / commits>
+
+## In progress
+- <what was being changed when we stopped; exact file and function>
+
+## Next steps
+1. <the very next action a fresh session should take>
+2. ...
+
+## Decisions (and why)
+- <decision>: <reason / user's words>
+
+## Open questions / blockers
+- <waiting on user, credentials, approval, etc.>
+
+## State to know
+- Uncommitted: <files or "none">
+- Running: <servers, ports, background tests or "nothing">
+- Tests: <which ran, results, known failures>
+```
