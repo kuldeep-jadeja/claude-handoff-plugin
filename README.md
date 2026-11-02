@@ -71,11 +71,18 @@ Sessions expire after 60 seconds instead of 60 minutes.
 
 ## 🔍 What it runs, reads and writes
 
-| Part | Runs | Reads | Writes |
-| :-- | :-- | :-- | :-- |
-| Hooks (`hooks/hooks.json`) | `python3` (or `python`) on `scripts/handoff.py`, standard library only | `knowledge/handoffs/*.md`; the session transcript Claude Code passes to the hook (only your last 8 prompts, redacted); read-only `git branch`, `git status`, `git log`, `git rev-parse` | `knowledge/handoffs/AUTO.md`; one line in `.git/info/exclude` |
-| `handoff` skill | Claude, with your usual permissions | `git` status and log | `knowledge/handoffs/CURRENT.md`; moves older handoffs to `knowledge/handoffs/archive/` |
-| `/handoff:resume`, `/handoff:list` | Claude, with your usual permissions | `knowledge/handoffs/`, `git branch` | Nothing, unless you ask to make an archived handoff the current one |
+**Hooks** (`hooks/hooks.json`)
+- **Run:** `python3` (or `python`) on `scripts/handoff.py`, standard library only.
+- **Read:** `knowledge/handoffs/*.md`; the session transcript Claude Code passes to the hook (only your last 8 prompts, redacted); read-only `git branch`, `git status`, `git log`, `git rev-parse`.
+- **Write:** `knowledge/handoffs/AUTO.md`, and one line in `.git/info/exclude`.
+
+**`handoff` skill**
+- **Runs as** Claude, with your usual permissions.
+- **Reads** `git` status and log. **Writes** `knowledge/handoffs/CURRENT.md`, and moves older handoffs to `knowledge/handoffs/archive/`.
+
+**`/handoff:resume` and `/handoff:list`**
+- **Run as** Claude, with your usual permissions.
+- **Read** `knowledge/handoffs/` and `git branch`. **Write** nothing, unless you ask to make an archived handoff the current one.
 
 The hooks add the handoff text to the session's context at startup, after `/clear` and after compaction. They don't change any Claude Code setting or permission.
 
