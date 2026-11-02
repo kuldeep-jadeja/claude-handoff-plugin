@@ -6,7 +6,7 @@ argument-hint: "[topic]"
 
 # Handoff
 
-Write the state a fresh Claude needs to continue without re-deriving anything. The plugin's SessionStart hook loads it automatically at startup and after `/clear`.
+Write the state a fresh Claude needs to continue without re-deriving anything. The plugin's SessionStart hook loads it automatically at startup, after `/clear` and after the conversation is compacted.
 
 ## Steps
 1. If `knowledge/handoffs/CURRENT.md` exists and covers a different topic or an older task, move it to `knowledge/handoffs/archive/<YYYY-MM-DD-HHMM>-<slug>.md` first. If it is the same ongoing task, update it in place.

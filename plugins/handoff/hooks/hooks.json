@@ -1,13 +1,24 @@
 {
-  "description": "Session continuity: load the last handoff at startup and after /clear; write an automatic snapshot when a session ends.",
+  "description": "Session continuity: load the last handoff at startup, after /clear and after compaction; write an automatic snapshot before compaction and when a session ends. Tries python3, then python (Windows).",
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|clear",
+        "matcher": "startup|clear|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" start",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" start 2>/dev/null || python -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" start 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" precompact 2>/dev/null || python -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" precompact 2>/dev/null || true",
             "timeout": 10
           }
         ]
@@ -18,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" end",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" end 2>/dev/null || python -I \"${CLAUDE_PLUGIN_ROOT}/scripts/handoff.py\" end 2>/dev/null || true",
             "timeout": 10
           }
         ]
