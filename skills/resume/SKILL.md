@@ -1,11 +1,12 @@
 ---
-description: Reload the latest session handoff, or an archived one, and pick up where you stopped
+name: resume
+description: Reload the latest session handoff (knowledge/handoffs/CURRENT.md), or an archived one, and get ready to continue the work it describes. Use when the user says "resume", "where did we leave off", "continue from last time" or "load the handoff".
 argument-hint: "[archive file name or topic]"
 ---
 
 Reload a saved handoff and get ready to continue the work it describes.
 
-Argument: $ARGUMENTS
+Argument (whatever the user typed after the command, may be empty): $ARGUMENTS
 
 1. Find the handoff:
    - No argument: read `knowledge/handoffs/CURRENT.md` and `knowledge/handoffs/AUTO.md` (whichever exist), however old they are.

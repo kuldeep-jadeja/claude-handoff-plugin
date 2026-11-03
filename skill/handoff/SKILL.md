@@ -6,7 +6,7 @@ argument-hint: "[topic] | resume [name or topic] | list | setup"
 
 # Handoff (standalone skill)
 
-Session continuity without the plugin. This skill writes and reads the same files as the `handoff` plugin, so a project can switch between the two at any time.
+Session continuity without the plugin, for Claude Code, Kiro, Antigravity or any agent that reads `SKILL.md` skills. This skill writes and reads the same files as the `handoff` plugin, so a project can switch between the two at any time.
 
 All paths are relative to the project root (the git top level when there is one, otherwise the working directory):
 
@@ -29,8 +29,8 @@ Argument: $ARGUMENTS
 2. Collect facts: `git branch --show-current`, `git status --short`, `git log --oneline -5`, any dev servers or background runs still alive (ports, test shells), and what this conversation decided. Outside a git repository, write `Branch: none` and skip the git facts.
 3. Write `knowledge/handoffs/CURRENT.md` using the template below. Keep it under 60 lines. Use specific file paths, commands and decisions, not narrative.
 4. Never write secrets: no connection strings with passwords, API keys, tokens, or private keys. Refer to them by env var name, even if the user typed the value in this conversation.
-5. Keep handoffs out of commits: inside a git repository, run `git rev-parse --git-path info/exclude` to find the exclude file. If it has no `/knowledge/handoffs/` line, append `# handoff: session handoffs stay local` and `/knowledge/handoffs/` on two new lines. This file is local to the clone; never touch `.gitignore`. Skip this step if the user said they want handoffs committed. Claude Code asks before writing inside `.git/`; if the write is refused, carry on and add one line to the reply: `Tip: add /knowledge/handoffs/ to .git/info/exclude to keep handoffs out of commits.`
-6. Reply with one line: `Handoff saved to knowledge/handoffs/CURRENT.md. Safe to /clear.` If `CURRENT.md` did not exist before this save and no CLAUDE.md has a `## Session handoff` section, add: `Next session, say "resume" (or run /handoff resume) to pick up from here.`
+5. Keep handoffs out of commits: inside a git repository, run `git rev-parse --git-path info/exclude` to find the exclude file. If it has no `/knowledge/handoffs/` line, append `# handoff: session handoffs stay local` and `/knowledge/handoffs/` on two new lines. This file is local to the clone; never touch `.gitignore`. Skip this step if the user said they want handoffs committed. Some tools (Claude Code among them) ask before writing inside `.git/`; if the write is refused, carry on and add one line to the reply: `Tip: add /knowledge/handoffs/ to .git/info/exclude to keep handoffs out of commits.`
+6. Reply with one line: `Handoff saved to knowledge/handoffs/CURRENT.md. Safe to /clear.` If `CURRENT.md` did not exist before this save and Setup has not been done (no `## Session handoff` section in the files listed under Setup), add: `Next session, say "resume" (or run /handoff resume) to pick up from here.`
 
 ### Template
 ```markdown
@@ -87,11 +87,18 @@ Updated: <YYYY-MM-DD HH:MM> | Branch: <branch> | Last commit: <hash subject>
 
 ## Setup
 
-Without the plugin there are no hooks, so a new session does not see the handoff unless something tells Claude to look. Setup adds that instruction to a CLAUDE.md file, which Claude Code loads at startup and after `/clear`.
+Without the plugin there are no hooks, so a new session does not see the handoff unless something tells the agent to look. Setup writes that instruction into the file your tool loads into every session. Use the row for the tool you are running in:
 
-1. If `./CLAUDE.md` or `~/.claude/CLAUDE.md` already contains a `## Session handoff` section, say which one and stop.
-2. In one message, show the block below and ask where it should go: this project only (`./CLAUDE.md`) or every project (`~/.claude/CLAUDE.md`). Do not choose for the user.
-3. When the user names a place, that is their confirmation: append the block to that file, creating it if it does not exist. If they decline, change nothing.
+| Tool | This project | Every project | How to write it |
+| :-- | :-- | :-- | :-- |
+| Claude Code | `./CLAUDE.md` | `~/.claude/CLAUDE.md` | Append the block. |
+| Kiro | `.kiro/steering/handoff.md` | `~/.kiro/steering/handoff.md` | New file: the block, after a frontmatter of `inclusion: always`. |
+| Antigravity | `.agents/rules/handoff.md` | `~/.gemini/config/rules/handoff.md` | New file: the block, after a frontmatter of `trigger: always_on`. Without it the rule is ignored. |
+| Any other tool | `./AGENTS.md` | (ask the user) | Append the block. |
+
+1. If the file for this tool, in either scope, already contains a `## Session handoff` section, say which one and stop.
+2. In one message, show the block below and ask where it should go: this project only or every project, naming the two files from the table. Do not choose for the user.
+3. When the user names a place, that is their confirmation: write the block there as the table says, creating the file and its folders if needed. If they decline, change nothing.
 
 ```markdown
 ## Session handoff

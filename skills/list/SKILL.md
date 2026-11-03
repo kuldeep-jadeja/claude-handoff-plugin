@@ -1,5 +1,6 @@
 ---
-description: List saved session handoffs (current and archived) and load one
+name: list
+description: List the session handoffs saved in this project (current and archived, newest first) and load the one the user picks. Use when the user asks which handoffs exist or wants an older one.
 ---
 
 Show the user the handoffs saved in this project and let them pick one to load.

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "handoff",
+  "displayName": "Handoff",
+  "version": "1.4.0",
+  "description": "Session continuity: save a handoff of the work in progress, and have the next session load it automatically.",
+  "logo": "assets/icon.png",
+  "suggestedPrompts": [
+    "Save a handoff of what we are doing",
+    "Where did we leave off?",
+    "List my saved handoffs"
+  ],
+  "author": {
+    "name": "Kuldeep Jadeja",
+    "url": "https://github.com/kuldeep-jadeja"
+  },
+  "homepage": "https://github.com/kuldeep-jadeja/claude-handoff-plugin",
+  "repository": "https://github.com/kuldeep-jadeja/claude-handoff-plugin",
+  "license": "MIT",
+  "keywords": [
+    "handoff",
+    "context",
+    "session",
+    "continuity",
+    "memory"
+  ]
+}

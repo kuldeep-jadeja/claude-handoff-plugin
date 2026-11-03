@@ -1,0 +1,18 @@
+{
+  "handoff": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "python3 -I ./scripts/handoff.py --client antigravity start || python -I ./scripts/handoff.py --client antigravity start",
+        "timeout": 10
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 -I ./scripts/handoff.py --client antigravity stop || python -I ./scripts/handoff.py --client antigravity stop",
+        "timeout": 10
+      }
+    ]
+  }
+}
