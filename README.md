@@ -1,11 +1,14 @@
 ![handoff: pick up exactly where you left off](assets/banner.svg)
 
 ![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-4662A8?style=for-the-badge)
+![Also a standalone skill](https://img.shields.io/badge/also-standalone_skill-4662A8?style=for-the-badge)
 ![MIT license](https://img.shields.io/badge/license-MIT-FFC43D?style=for-the-badge)
 ![Python 3, standard library only](https://img.shields.io/badge/python_3-stdlib_only-2A3870?style=for-the-badge)
 ![Runs locally](https://img.shields.io/badge/network-none-1C2547?style=for-the-badge)
 
 **Session continuity for Claude Code.** Before you `/clear` or close a session, Claude writes a short handoff of the work in progress. The next session loads it automatically, so you never re-explain where you stopped.
+
+Install it as a **plugin** (hooks load the handoff for you) or copy in a single **skill** file (no hooks, no scripts). See [Install](#-install).
 
 ---
 
@@ -20,6 +23,43 @@ Run these inside Claude Code, then restart it so the hooks load:
 
 > [!TIP]
 > To update later: `/plugin marketplace update kuldeep-jadeja`, then restart Claude Code.
+
+### Or: just the skill, no plugin
+
+Prefer not to add a plugin? Copy one file. The skill saves, resumes and lists handoffs in the same format as the plugin, so you can switch later.
+
+**macOS / Linux**, for all your projects:
+
+```bash
+mkdir -p ~/.claude/skills/handoff
+curl -fsSL https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/skill/handoff/SKILL.md \
+  -o ~/.claude/skills/handoff/SKILL.md
+```
+
+**Windows (PowerShell)**:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills\handoff" | Out-Null
+Invoke-WebRequest https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/skill/handoff/SKILL.md `
+  -OutFile "$HOME\.claude\skills\handoff\SKILL.md"
+```
+
+For one project only, put the file in `.claude/skills/handoff/SKILL.md` inside that project instead.
+
+| You do | What happens |
+| :-- | :-- |
+| Say **"handoff"** or **"I'm going to clear"**, or run `/handoff [topic]` | Claude writes `knowledge/handoffs/CURRENT.md`, as the plugin does. |
+| Say **"resume"** or run `/handoff resume [name or topic]` | Claude reads the handoff, tells you the next step, warns about another branch, and asks before working. |
+| `/handoff list` | See current and archived handoffs and pick one to load. |
+| `/handoff setup` | Adds a short instruction to `CLAUDE.md` (this project or all projects, you choose) so new sessions check for a handoff on their own. |
+
+**Skill vs plugin.** The skill has no hooks and runs no scripts. That means:
+
+- A new session does not load the handoff by itself. Say "resume", or run `/handoff setup` once.
+- There is no automatic snapshot (`AUTO.md`) when a session ends or is compacted. Save a handoff before you `/clear`.
+- No 14-day age setting: the skill checks the `Updated:` date and warns you when a handoff is old.
+
+Install one or the other, not both, or Claude sees two `handoff` skills.
 
 ## 🔄 How it works
 
@@ -86,6 +126,10 @@ Sessions expire after 60 seconds instead of 60 minutes.
 
 The hooks add the handoff text to the session's context at startup, after `/clear` and after compaction. They don't change any Claude Code setting or permission.
 
+**Standalone skill** (`skill/handoff/SKILL.md`)
+- **Runs as** Claude, with your usual permissions. No hooks, no scripts.
+- **Reads** `knowledge/handoffs/`, `git` branch, status and log. **Writes** `knowledge/handoffs/CURRENT.md` and `archive/`, one line in `.git/info/exclude`, and, only with `/handoff setup` and your confirmation, a short section in the `CLAUDE.md` you pick.
+
 ## ⚙️ Requirements and settings
 
 - **Python 3** on your PATH, as `python3` or `python`. On Windows, install it from python.org and tick "Add python.exe to PATH".
@@ -144,6 +188,7 @@ Cases and how to run them: [evals/README.md](evals/README.md).
 
 ## 📝 Changelog
 
+- **1.3.0**: standalone skill (`skill/handoff/SKILL.md`) for people who don't want the plugin: save, resume, list, and an optional `CLAUDE.md` setup so new sessions check for a handoff.
 - **1.2.2**: new README with banner and diagram (fixes the broken Mermaid chart).
 - **1.2.1**: plugin moved to the repository root; README lists everything the plugin runs, reads and writes.
 - **1.2.0**: `/handoff:resume` and `/handoff:list`; leaner automatic snapshot; eval suite.
