@@ -1,0 +1,45 @@
+/* Shared tokens for the README artwork. Rendered by tools/render_assets.py. */
+:root {
+  --ground: #F5F5F0;
+  --ink: #15171C;
+  --ink-soft: #4A4E57;
+  --step: #E9E9E2;
+  --note: #FFCF33;
+  --note-under: #C99700;
+  --note-ink: #15171C;
+  --sans: "Ubuntu Sans", "Ubuntu", system-ui, sans-serif;
+  --mono: "Ubuntu Sans Mono", "Ubuntu Mono", ui-monospace, monospace;
+}
+:root[data-theme="dark"] {
+  --ground: #0D1117;
+  --ink: #F0F0EA;
+  --ink-soft: #A9ADB5;
+  --step: #161B22;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { background: var(--ground); color: var(--ink); font-family: var(--sans); }
+body { -webkit-font-smoothing: antialiased; }
+
+/* The sticky note: the handoff file itself */
+.note {
+  position: relative;
+  background: var(--note);
+  color: var(--note-ink);
+  border-radius: 14px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 56px), calc(100% - 56px) 100%, 0 100%);
+  font-family: var(--mono);
+}
+.note::after {
+  content: "";
+  position: absolute; right: 0; bottom: 0;
+  width: 56px; height: 56px;
+  background: var(--note-under);
+  clip-path: polygon(100% 0, 0 100%, 0 14px, 14px 0);
+}
+.note .h1 { font-weight: 700; }
+.note .meta { opacity: .72; }
+.note .h2 { font-weight: 700; margin-top: 1.1em; }
+.cursor {
+  display: inline-block; width: .55em; height: 1.15em;
+  background: var(--note-ink); vertical-align: -0.22em; margin-left: .12em; border-radius: 2px;
+}

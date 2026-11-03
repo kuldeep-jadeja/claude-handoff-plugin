@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>handoff banner</title>
+<link rel="stylesheet" href="brand.css">
+<script>if (location.hash === "#dark") document.documentElement.dataset.theme = "dark";</script>
+<style>
+  body { width: 1280px; height: 400px; overflow: hidden; position: relative; }
+  .lockup { position: absolute; left: 64px; top: 70px; }
+  .name { display: flex; align-items: center; gap: 26px; }
+  .name img { width: 104px; height: 104px; margin-left: -10px; }
+  .name h1 { font-size: 124px; line-height: .9; font-weight: 800; letter-spacing: -0.05em; }
+  .say { margin-top: 34px; font-size: 34px; font-weight: 600; letter-spacing: -0.015em; }
+  .what { margin-top: 12px; font-size: 21px; line-height: 1.45; color: var(--ink-soft); max-width: 600px; }
+  .note.hero {
+    position: absolute; left: 744px; top: 58px; width: 500px; height: 380px;
+    padding: 34px 36px; font-size: 19px; line-height: 1.55;
+    transform: rotate(-3deg); transform-origin: top left;
+  }
+</style>
+</head>
+<body>
+  <div class="lockup">
+    <div class="name"><img src="../logo.svg" alt=""><h1>handoff</h1></div>
+    <p class="say">Pick up exactly where you left off.</p>
+    <p class="what">Your agent leaves a note before you clear the session. The next one reads it first, in Claude Code, Kiro or Antigravity.</p>
+  </div>
+  <div class="note hero" aria-hidden="true">
+    <div class="h1"># Handoff: Login timeout bug</div>
+    <div class="meta">Branch: fix/login-timeout</div>
+    <div class="h2">## Done</div>
+    <div>- isExpired() compares the TTL in ms</div>
+    <div class="h2">## Next steps</div>
+    <div>1. Test a 59-minute-old session<span class="cursor"></span></div>
+  </div>
+</body>
+</html>

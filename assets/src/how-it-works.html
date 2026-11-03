@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>handoff: how it works</title>
+<link rel="stylesheet" href="brand.css">
+<script>if (location.hash === "#dark") document.documentElement.dataset.theme = "dark";</script>
+<style>
+  body { width: 1280px; height: 560px; overflow: hidden; position: relative; }
+  .col { position: absolute; top: 56px; }
+  .tool { font-size: 18px; font-weight: 600; color: var(--ink-soft); letter-spacing: -0.005em; }
+  .moment { font-size: 30px; font-weight: 750; letter-spacing: -0.025em; margin-top: 6px; }
+  .said { margin-top: 26px; background: var(--step); border-radius: 14px; padding: 18px 22px; font-size: 21px; line-height: 1.45; }
+  .said b { display: block; font-size: 15px; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; }
+  .said + .said { margin-top: 12px; }
+  .said strong { font-weight: 700; }
+  .left { left: 56px; width: 330px; }
+  .right { left: 894px; width: 330px; }
+  .mid { left: 462px; top: 40px; width: 360px; }
+  .path { width: 420px; margin-left: -30px; }
+  .note.card { width: 360px; padding: 26px 26px 40px; font-size: 16.5px; line-height: 1.55; transform: rotate(-2deg); }
+  .path { margin-top: 26px; font-family: var(--mono); font-size: 18px; color: var(--ink); text-align: center; }
+  .path span { display: block; font-family: var(--sans); color: var(--ink-soft); font-size: 17px; margin-top: 4px; }
+  svg.arrow { position: absolute; top: 230px; width: 56px; height: 24px; }
+  .facts { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; background: var(--step);
+           display: flex; align-items: center; gap: 64px; padding: 0 56px; font-size: 20px; line-height: 1.35; }
+  .facts p { flex: 1; }
+  .facts strong { font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="col left">
+    <p class="tool">Session one, in Claude Code</p>
+    <p class="moment">Before you clear</p>
+    <div class="said"><b>You</b>Save context, I'll clear.</div>
+    <div class="said"><b>Agent</b>Handoff saved. Safe to /clear.</div>
+  </div>
+
+  <svg class="arrow" style="left:398px" viewBox="0 0 56 24" aria-hidden="true"><path d="M2 12 H46 M36 3 L48 12 L36 21" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+  <div class="col mid">
+    <div class="note card" aria-hidden="true">
+      <div class="h1"># Handoff: Login timeout bug</div>
+      <div class="meta">Branch: fix/login-timeout</div>
+      <div class="h2">## Done</div>
+      <div>- isExpired() compares ms</div>
+      <div class="h2">## Next steps</div>
+      <div>1. Test a 59-minute session<span class="cursor"></span></div>
+      <div class="h2">## Decisions</div>
+      <div>- Refresh tokens left alone</div>
+    </div>
+    <p class="path">knowledge/handoffs/CURRENT.md<span>A plain file in your project, read by all three tools.</span></p>
+  </div>
+
+  <svg class="arrow" style="left:830px" viewBox="0 0 56 24" aria-hidden="true"><path d="M2 12 H46 M36 3 L48 12 L36 21" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+  <div class="col right">
+    <p class="tool">Session two, in Kiro or Antigravity</p>
+    <p class="moment">It already knows</p>
+    <div class="said"><b>Agent</b>We were fixing the login timeout. Next, the test for a session 59 minutes old. <strong>Continue from here?</strong></div>
+  </div>
+
+  <div class="facts">
+    <p><strong>Stays local.</strong> Out of your git commits, never sent anywhere.</p>
+    <p><strong>Never stale.</strong> Handoffs older than 14 days are not loaded.</p>
+    <p><strong>Branch aware.</strong> Saved on another branch? You hear that first.</p>
+  </div>
+</body>
+</html>

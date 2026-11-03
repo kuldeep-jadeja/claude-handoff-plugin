@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="handoff logo: a sticky note left for the next session, with a text cursor after its last line">
+  <title>handoff</title>
+  <g transform="rotate(-4 512 512)">
+    <!-- The note left for the next session; its bottom-right corner lifts -->
+    <path d="M196 140 H828 a56 56 0 0 1 56 56 V700 L700 884 H196 a56 56 0 0 1 -56 -56 V196 a56 56 0 0 1 56 -56 Z" fill="#FFCF33"/>
+    <!-- Underside of the lifted corner -->
+    <path d="M884 700 L700 884 V756 a56 56 0 0 1 56 -56 Z" fill="#C99700"/>
+    <!-- What it says, and the cursor where work picks up -->
+    <rect x="252" y="318" width="420" height="64" rx="32" fill="#15171C"/>
+    <rect x="252" y="464" width="300" height="64" rx="32" fill="#15171C"/>
+    <rect x="252" y="610" width="168" height="64" rx="32" fill="#15171C"/>
+    <rect x="454" y="592" width="52" height="100" rx="8" fill="#15171C"/>
+  </g>
+</svg>

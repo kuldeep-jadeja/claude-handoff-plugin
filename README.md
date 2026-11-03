@@ -1,85 +1,80 @@
-![handoff: pick up exactly where you left off](assets/banner.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
+  <img alt="handoff. Pick up exactly where you left off. Your agent leaves a note before you clear the session, and the next one reads it first, in Claude Code, Kiro or Antigravity." src="assets/banner-light.png">
+</picture>
 
-![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-4662A8?style=for-the-badge)
-![Antigravity plugin](https://img.shields.io/badge/Antigravity-plugin-4662A8?style=for-the-badge)
-![Kiro skills and hooks](https://img.shields.io/badge/Kiro-skills_+_hooks-4662A8?style=for-the-badge)
-![MIT license](https://img.shields.io/badge/license-MIT-FFC43D?style=for-the-badge)
-![Python 3, standard library only](https://img.shields.io/badge/python_3-stdlib_only-2A3870?style=for-the-badge)
-![Runs locally](https://img.shields.io/badge/network-none-1C2547?style=for-the-badge)
+You clear the session, restart, or a long conversation gets compacted, and the agent forgets what it was doing. **handoff** fixes that. Before you clear, the agent writes a short note: the goal, what is done, the very next step, and the decisions made along the way. The next session loads that note first, tells you in one line where you stopped, and asks before carrying on.
 
-**Session continuity for AI coding agents.** Before you clear or close a session, the agent writes a short handoff of the work in progress. The next session loads it automatically, so you never re-explain where you stopped.
+It works in **Claude Code**, **Google Antigravity** and **Kiro**. All three use the same `knowledge/handoffs/` folder in your project, so you can stop in one tool and pick up in another.
 
-Works in **Claude Code**, **Google Antigravity** and **Kiro**. All three read and write the same `knowledge/handoffs/` folder, so you can save in one tool and pick up in another. Don't want a plugin? Copy in a [single skill file](#-just-the-skill-any-tool) instead.
+<br>
 
----
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
+  <img alt="Session one, in Claude Code: you say 'Save context, I'll clear' and the agent saves the handoff. The note, knowledge/handoffs/CURRENT.md, holds the goal, what is done and the next step. Session two, in Kiro or Antigravity: the agent says 'We were fixing the login timeout. Continue from here?' Handoffs stay local, are not loaded after 14 days, and you are told when one was saved on another branch." src="assets/how-it-works-light.png">
+</picture>
 
-## ⚡ Install
+## Install
 
 ### Claude Code
 
-Run these inside Claude Code, then restart it so the hooks load:
+Inside Claude Code, then restart it so the hooks load:
 
 ```
 /plugin marketplace add kuldeep-jadeja/claude-handoff-plugin
 /plugin install handoff@kuldeep-jadeja
 ```
 
-> [!TIP]
-> To update later: `/plugin marketplace update kuldeep-jadeja`, then restart Claude Code.
+To update later, run `/plugin marketplace update kuldeep-jadeja` and restart.
 
-### Antigravity (CLI, IDE and App)
-
-With the Antigravity CLI:
+### Antigravity
 
 ```bash
 agy plugin install https://github.com/kuldeep-jadeja/claude-handoff-plugin
 ```
 
-Without the CLI, clone the repository into the plugins folder, which the Antigravity IDE and App also read:
+No CLI? Clone the repository into the plugins folder, which the Antigravity IDE and App read too:
 
 ```bash
 git clone https://github.com/kuldeep-jadeja/claude-handoff-plugin ~/.gemini/config/plugins/handoff
 ```
 
-Start a new conversation afterwards. Details: [docs/antigravity.md](docs/antigravity.md).
+Needs Antigravity CLI 1.4 or later, or the 2.x IDE or App. Start a new conversation afterwards. More in [docs/antigravity.md](docs/antigravity.md).
 
-### Kiro (IDE and CLI)
-
-**macOS / Linux**:
+### Kiro
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/kiro/install.sh | bash
 ```
 
-**Windows (PowerShell)**:
-
-```powershell
-irm https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/kiro/install.ps1 | iex
-```
-
-This installs the skills and the Kiro CLI hooks in `~/.kiro/`. The **Kiro IDE** reads hooks from each project, so from every project folder where you want the handoff loaded automatically, also run:
+That installs the skills and the Kiro CLI hooks in `~/.kiro/`. The Kiro IDE reads hooks per project, so in each project where the handoff should load by itself, run this from the project folder:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/kiro/install.sh | bash -s -- --project
 ```
 
+<details>
+<summary>Windows (PowerShell)</summary>
+
 ```powershell
+irm https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/kiro/install.ps1 | iex
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugin/main/kiro/install.ps1))) -Project
 ```
 
-Details: [docs/kiro.md](docs/kiro.md).
+The second line adds the hooks to the current project, for the Kiro IDE.
+</details>
 
-### 📎 Just the skill (any tool)
+More in [docs/kiro.md](docs/kiro.md).
 
-No plugin, no hooks, no scripts: one `SKILL.md` that saves, resumes and lists handoffs in the same format. Put it in your tool's skills folder:
+### Just the skill, in any agent
 
-| Tool | All projects | One project |
+No plugin, no hooks, no Python: one `SKILL.md` that saves, resumes and lists handoffs in the same format. Put it in your tool's skills folder.
+
+| Tool | Every project | One project |
 | :-- | :-- | :-- |
 | Claude Code | `~/.claude/skills/handoff/SKILL.md` | `.claude/skills/handoff/SKILL.md` |
 | Antigravity | `~/.gemini/config/skills/handoff/SKILL.md` | `.agents/skills/handoff/SKILL.md` |
 | Kiro | `~/.kiro/skills/handoff/SKILL.md` | `.kiro/skills/handoff/SKILL.md` |
-
-For example, for Claude Code on macOS or Linux:
 
 ```bash
 mkdir -p ~/.claude/skills/handoff
@@ -87,7 +82,8 @@ curl -fsSL https://raw.githubusercontent.com/kuldeep-jadeja/claude-handoff-plugi
   -o ~/.claude/skills/handoff/SKILL.md
 ```
 
-Windows (PowerShell):
+<details>
+<summary>Windows (PowerShell), and what the skill can and can't do</summary>
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.claude\skills\handoff" | Out-Null
@@ -99,35 +95,26 @@ Change the folder for the other tools.
 
 | You do | What happens |
 | :-- | :-- |
-| Say **"handoff"** or **"I'm going to clear"**, or run `/handoff [topic]` | The agent writes `knowledge/handoffs/CURRENT.md`, as the plugins do. |
-| Say **"resume"** or run `/handoff resume [name or topic]` | The agent reads the handoff, tells you the next step, warns about another branch, and asks before working. |
-| `/handoff list` | See current and archived handoffs and pick one to load. |
-| `/handoff setup` | Adds a short always-on instruction (to `CLAUDE.md`, a Kiro steering file or an Antigravity rule, for this project or all projects, you choose) so new sessions check for a handoff on their own. |
+| Say "handoff" or "I'm going to clear", or `/handoff [topic]` | The agent writes `knowledge/handoffs/CURRENT.md`, as the plugins do. |
+| Say "resume", or `/handoff resume [name or topic]` | It reads the handoff, gives you the next step, warns about another branch, and asks before working. |
+| `/handoff list` | Current and archived handoffs, newest first. Pick one to load. |
+| `/handoff setup` | Adds a short always-on instruction (to `CLAUDE.md`, a Kiro steering file or an Antigravity rule, for this project or all of them) so new sessions look for a handoff by themselves. |
 
-**Skill vs plugin.** The skill has no hooks and runs no scripts. That means:
+Without hooks, a new session doesn't load the handoff until you say "resume" or run `/handoff setup` once, and there is no automatic snapshot, so save before you clear. Install the skill or the plugin in a tool, not both.
+</details>
 
-- A new session does not load the handoff by itself. Say "resume", or run `/handoff setup` once.
-- There is no automatic snapshot (`AUTO.md`). Save a handoff before you clear the session.
-- No 14-day age setting: the skill checks the `Updated:` date and warns you when a handoff is old.
+## Use it
 
-Install the skill or the plugin in a tool, not both, or the agent sees two `handoff` skills.
-
-## 🔄 How it works
-
-![Session 1 saves a handoff into knowledge/handoffs/, and Session 2 loads it and asks whether to continue](assets/how-it-works.svg)
-
-## 🧭 Commands
-
-| You do | Claude Code and Antigravity | Kiro |
+| You want to | Claude Code and Antigravity | Kiro |
 | :-- | :-- | :-- |
-| Save a handoff | Say **"handoff"**, **"save context"** or **"I'm going to clear"**, or `/handoff:handoff [topic]` | Same words, or `/handoff [topic]` |
-| Pick up where you stopped | Automatic when a new session starts (in Claude Code also after `/clear` and compaction) | Automatic when a new session starts |
-| Reload the latest or an archived handoff, even past the age limit | `/handoff:resume [name or topic]`, or say "resume" | `/handoff-resume [name or topic]`, or say "resume" |
-| See all handoffs, newest first, and pick one | `/handoff:list` | `/handoff-list` |
+| Save a handoff | Say "handoff", "save context" or "I'm going to clear", or `/handoff:handoff [topic]` | Same words, or `/handoff [topic]` |
+| Pick up where you stopped | Nothing to do: a new session loads it (in Claude Code also after `/clear` and compaction) | Nothing to do: a new session loads it |
+| Reload the latest or an older handoff, even past the age limit | Say "resume", or `/handoff:resume [name or topic]` | Say "resume", or `/handoff-resume [name or topic]` |
+| See every handoff and pick one | `/handoff:list` | `/handoff-list` |
 
-Saving writes `knowledge/handoffs/CURRENT.md`. An older handoff on another topic moves to `knowledge/handoffs/archive/`. When the next session starts, the agent says what was in progress and asks before resuming.
+Saving writes `knowledge/handoffs/CURRENT.md`. A handoff on another topic moves to `knowledge/handoffs/archive/` first; nothing is ever deleted.
 
-## 📄 What a handoff looks like
+## What a handoff looks like
 
 ```markdown
 # Handoff: Login timeout bug
@@ -150,22 +137,23 @@ Sessions expire after 60 seconds instead of 60 minutes.
 - Running: nothing
 ```
 
-## 🛡️ Safe by default
+Under 60 lines, with file paths, commands and decisions instead of a story. Besides the note the agent writes, the hooks keep `AUTO.md`, a mechanical snapshot of the branch, uncommitted files, recent commits and your last prompts, in case you clear without saving.
 
-| Guarantee | How |
-| :-- | :-- |
-| 🔒 **No secrets** | The skill never writes passwords, keys or tokens. The automatic snapshot redacts them (API keys, tokens, private keys, credentials in URLs, "the password is ..."). |
-| 🙈 **Out of your commits** | Hooks add `/knowledge/handoffs/` to `.git/info/exclude`, which is local to your clone. Your `.gitignore` is not touched. |
-| ⏳ **No stale context** | Handoffs older than 14 days are not loaded, so an old task never steers a new one. The resume command still loads them. |
-| 🌿 **Branch aware** | If a handoff was written on another git branch, the agent tells you before resuming. |
-| 🪶 **Light on tokens** | About 116 tokens per session. When you saved a handoff, the automatic snapshot drops that session's prompts. |
-| 💻 **Local only** | No network requests. Nothing leaves your machine. |
+## Safe by default
 
-## 🔍 What it runs, reads and writes
+- **No secrets.** The skill never writes passwords, keys or tokens; it names the environment variable instead. The automatic snapshot redacts API keys, tokens, private keys, credentials in URLs and phrases like "the password is …".
+- **Out of your commits.** `/knowledge/handoffs/` goes into `.git/info/exclude`, which is local to your clone. Your `.gitignore` is not touched.
+- **Never stale.** Handoffs older than 14 days are not loaded, so an old task never steers a new one. The resume command still opens them.
+- **Branch aware.** A handoff written on another git branch is flagged before anything resumes.
+- **Light.** About 116 tokens per session. If you saved a handoff, the snapshot leaves that session's prompts out.
+- **Local.** No network requests. Nothing leaves your machine.
 
-**Hook script** (`scripts/handoff.py`, Python 3, standard library only), used by every tool:
-- **Reads:** `knowledge/handoffs/*.md`; your last 8 prompts, redacted (from the session transcript the tool passes to the hook, or, in Kiro, from the prompt hook); read-only `git branch`, `git status`, `git log`, `git rev-parse`.
-- **Writes:** `knowledge/handoffs/AUTO.md`, one line in `.git/info/exclude`, and, for Kiro and Antigravity, a small per-session state file in your temp folder (`handoff-state/`).
+<details>
+<summary><b>What it runs, reads and writes</b></summary>
+
+**Hook script**, `scripts/handoff.py` (Python 3, standard library only), shared by all three tools:
+- **Reads** `knowledge/handoffs/*.md`; your last 8 prompts, redacted (from the transcript the tool hands the hook, or in Kiro from the prompt hook); read-only `git branch`, `git status`, `git log`, `git rev-parse`.
+- **Writes** `knowledge/handoffs/AUTO.md`, one line in `.git/info/exclude`, and for Kiro and Antigravity a small per-session state file in your temp folder (`handoff-state/`).
 
 | Tool | Hooks file | Events |
 | :-- | :-- | :-- |
@@ -173,92 +161,101 @@ Sessions expire after 60 seconds instead of 60 minutes.
 | Antigravity | `hooks.json` | `SessionStart`, `Stop` |
 | Kiro | `~/.kiro/hooks/handoff.json`, `.kiro/hooks/handoff.json` | `SessionStart`, `UserPromptSubmit` (prints nothing), `Stop` |
 
-**Skills** (`skills/handoff`, `skills/resume`, `skills/list`; Kiro's copies in `kiro/skills/`)
+**Skills**, `skills/handoff`, `skills/resume`, `skills/list` (Kiro's copies in `kiro/skills/`):
 - **Run as** the agent, with your usual permissions.
-- **Read** `knowledge/handoffs/` and `git`. **Write** `knowledge/handoffs/CURRENT.md` and `archive/` (save only; resume and list write nothing unless you ask to make an archived handoff the current one).
+- **Read** `knowledge/handoffs/` and `git`. **Write** `CURRENT.md` and `archive/` when saving; resume and list write nothing unless you ask to make an archived handoff the current one.
+
+**Standalone skill**, `skill/handoff/SKILL.md`: no hooks, no scripts. Writes `CURRENT.md`, `archive/`, one line in `.git/info/exclude`, and, only with `/handoff setup` and your confirmation, the instruction file you pick.
 
 The hooks only add the handoff text to the session's context. They don't change any setting or permission.
+</details>
 
-**Standalone skill** (`skill/handoff/SKILL.md`)
-- **Runs as** the agent, with your usual permissions. No hooks, no scripts.
-- **Reads** `knowledge/handoffs/`, `git` branch, status and log. **Writes** `knowledge/handoffs/CURRENT.md` and `archive/`, one line in `.git/info/exclude`, and, only with `/handoff setup` and your confirmation, the instruction file you pick.
-
-## ⚙️ Requirements and settings
+<details>
+<summary><b>Requirements and settings</b></summary>
 
 - **Python 3** on your PATH, as `python3` or `python`. On Windows, install it from python.org and tick "Add python.exe to PATH". The standalone skill needs no Python.
 - **Git** is recommended for branch and commit info, but not required.
 
-Optional environment variables (in Claude Code, for example in the `env` block of `~/.claude/settings.json`; in Kiro and Antigravity, in the environment the app starts with):
+Optional environment variables. In Claude Code, set them in the `env` block of `~/.claude/settings.json`; in Kiro and Antigravity, in the environment the app starts with.
 
 | Variable | Default | What it does |
 | :-- | :-- | :-- |
 | `HANDOFF_MAX_AGE_DAYS` | `14` | Handoffs older than this are not loaded at startup. `0` loads them at any age. |
 | `HANDOFF_GIT_EXCLUDE` | `1` | Set to `0` if you want to commit your handoffs. |
+</details>
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 <details>
-<summary><b>The new session doesn't mention the handoff</b></summary>
+<summary>The new session doesn't mention the handoff</summary>
 
-Start a new session after installing or updating (in Claude Code, restart it). Check that `knowledge/handoffs/CURRENT.md` exists in the project you opened and is less than 14 days old, or run the resume command. In the Kiro IDE, check that the project has `.kiro/hooks/handoff.json` (run the installer with `--project`).
+Start a new session after installing or updating (in Claude Code, restart it). Check that `knowledge/handoffs/CURRENT.md` exists in the project you opened and is less than 14 days old, or run the resume command. In the Kiro IDE, the project needs `.kiro/hooks/handoff.json`: run the installer with `--project`. In Antigravity, check the version: IDE builds before 2.x don't load plugins.
 </details>
 
 <details>
-<summary><b>Nothing happens at all</b></summary>
+<summary>Nothing happens at all</summary>
 
 Run `python3 --version` (or `python --version` on Windows). The hooks stay silent when Python is missing.
 </details>
 
 <details>
-<summary><b>The handoff shows up twice</b></summary>
+<summary>The handoff shows up twice</summary>
 
-Claude Code: you also have the same hooks in a project or user `settings.json`. Remove one copy. In Kiro, global and project hooks both run, but the script loads the handoff only once per session.
+Claude Code: the same hooks are also in a project or user `settings.json`; remove one copy. In Kiro, global and project hooks both run, but the script loads the handoff only once per session.
 </details>
 
 <details>
-<summary><b>Handoffs show up in <code>git status</code></b></summary>
+<summary>Handoffs show up in <code>git status</code></summary>
 
 They were committed before you installed the plugin. Run `git rm -r --cached knowledge/handoffs` once.
 </details>
 
 <details>
-<summary><b>I want my handoffs in the repo</b></summary>
+<summary>I want my handoffs in the repo</summary>
 
 Set `HANDOFF_GIT_EXCLUDE=0` and delete the `/knowledge/handoffs/` line from `.git/info/exclude`.
 </details>
 
-## 🧪 Evals
+## Tested
 
-Tested with `claude plugin eval`, comparing Claude with and without the plugin:
+With `claude plugin eval`, comparing Claude Code with and without the plugin:
 
-| Case | With plugin | Without |
+| Case | With | Without |
 | :-- | :-: | :-: |
-| Saves a handoff on "I'm going to /clear", in the template, with the key facts | ✅ 1.00 | ❌ 0.00 |
-| Keeps a password and an API key out of the handoff | ✅ 1.00 | ❌ 0.00 |
-| `/handoff:resume` summarises, warns about the branch, waits before working | ✅ 1.00 | 0.89 |
+| Saves a handoff on "I'm going to /clear", in the template, with the key facts | 1.00 | 0.00 |
+| Keeps a password and an API key out of the handoff | 1.00 | 0.00 |
+| `/handoff:resume` summarises, warns about the branch, waits before working | 1.00 | 0.89 |
 
-Cases and how to run them: [evals/README.md](evals/README.md). Kiro and Antigravity checks: [docs/kiro.md](docs/kiro.md#tested), [docs/antigravity.md](docs/antigravity.md#tested).
+Cases and how to run them: [evals/README.md](evals/README.md). Antigravity and Kiro runs: [docs/antigravity.md](docs/antigravity.md#tested), [docs/kiro.md](docs/kiro.md#tested).
 
-## 🛠️ Development
+## Development
 
-Claude Code and Antigravity load the same skills from `skills/`. Kiro's copies are generated from them, so there is one copy to edit:
+Claude Code and Antigravity load the same skills from `skills/`. Kiro's copies are generated from them, so there is one copy to edit.
 
-- Edit `skills/handoff/SKILL.md`, `skills/resume/SKILL.md` or `skills/list/SKILL.md`.
-- Run `python3 tools/build_skills.py` to regenerate `kiro/skills/`.
-- `python3 tools/build_skills.py --check` exits with 1 when the generated files are out of date.
+```bash
+python3 tools/build_skills.py           # regenerate kiro/skills/ after editing skills/
+python3 tools/build_skills.py --check   # exit 1 when kiro/skills/ is out of date
+python3 tools/render_assets.py          # re-render the README art and icons from assets/src/ (needs Chrome)
+claude plugin validate . && agy plugin validate --strict .
+```
 
-Validate before a release: `claude plugin validate .` and `agy plugin validate --strict .`.
+The logo is `assets/logo.svg`. The banner and diagram are HTML in `assets/src/`, rendered to light and dark PNGs.
 
-## 📝 Changelog
+<details>
+<summary><b>Changelog</b></summary>
 
-- **1.4.0**: Antigravity plugin and Kiro skills and hooks, sharing one hook script and handoff format with Claude Code. `/handoff:resume` and `/handoff:list` are now skills, shared with Antigravity (same names, and they also run when you say "resume"); Claude Code's hooks moved to `claude/hooks.json`. Redaction also catches "the password is ...". The standalone skill's setup works in Kiro and Antigravity too.
+- **1.4.1**: new logo (a sticky note with its corner lifting and a cursor where work picks up), new banner and diagram with light and dark versions, and a tidier README.
+- **1.4.0**: Antigravity plugin and Kiro skills and hooks, sharing one hook script and handoff format with Claude Code. `/handoff:resume` and `/handoff:list` are now skills, shared with Antigravity (same names, and they also run when you say "resume"); Claude Code's hooks moved to `claude/hooks.json`. Redaction also catches "the password is …". The standalone skill's setup works in Kiro and Antigravity too.
 - **1.3.0**: standalone skill (`skill/handoff/SKILL.md`) for people who don't want the plugin: save, resume, list, and an optional `CLAUDE.md` setup so new sessions check for a handoff.
 - **1.2.2**: new README with banner and diagram (fixes the broken Mermaid chart).
 - **1.2.1**: plugin moved to the repository root; README lists everything the plugin runs, reads and writes.
 - **1.2.0**: `/handoff:resume` and `/handoff:list`; leaner automatic snapshot; eval suite.
 - **1.1.0**: reload after compaction; skip handoffs older than 14 days; branch warning; keep handoffs out of commits; Windows support.
 - **1.0.0**: first release.
+</details>
 
----
+<br>
+
+<img src="assets/logo.svg" width="40" alt="">
 
 MIT © [Kuldeep Jadeja](https://github.com/kuldeep-jadeja)

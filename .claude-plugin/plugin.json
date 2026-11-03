@@ -1,6 +1,6 @@
 {
   "name": "handoff",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Session continuity for Claude Code: save a handoff before /clear and have it loaded automatically in the next session.",
   "author": {
     "name": "Kuldeep Jadeja",
